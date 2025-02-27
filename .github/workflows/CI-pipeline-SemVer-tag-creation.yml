@@ -3,7 +3,7 @@ name: Build and Push Docker Image on Tag Creation
 on:
   push:
     tags:
-      - 'v*'  # This ensures the workflow is triggered only for tags starting with 'v' (e.g., v1.0.0)
+      - 'v*'  # Trigger for tags like v1.0.0, v2.0.0, etc.
 
 jobs:
   build:
@@ -46,5 +46,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ivaylorashkov/python-stats-app:${{ env.VERSION }}  # Tag with the version extracted from the Git tag
-            ivaylorashkov/python-stats-app:latest  # Always update latest
+            ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # This is the valid tag, without extra spaces or comments
+            ivaylorashkov/python-stats-app-tag:latest  # Always update latest
