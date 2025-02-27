@@ -1,11 +1,14 @@
+name: Build and Push Docker Image on Push
+
 on:
   push:
+    branches: ["master"]
     tags:
-      - 'v*'  # Trigger for tags like v1.0.0, v2.0.0, etc.
+      - 'v*'  # This ensures the workflow triggers for tags following SemVer format, e.g., v1.0.0
+    # Alternatively, you could use a label by using `pull_request` instead of `push` if that's required.
 
 jobs:
   build:
-    if: startsWith(github.ref, 'refs/tags/v')  # Ensure the tag starts with 'v' for SemVer validation
     runs-on: ubuntu-latest
 
     steps:
@@ -15,19 +18,11 @@ jobs:
       - name: Extract version from tag
         id: extract_version
         run: |
-          # Extract version from the tag
-          TAG_NAME=${GITHUB_REF##*/}
-          VERSION=$(echo "$TAG_NAME" | grep -Eo '^v[0-9]+\.[0-9]+\.[0-9]+$' || echo "invalid")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          # Extract version from the tag (without 'v' prefix)
+          TAG_NAME=${GITHUB_REF##*/}  # This gets the tag name (e.g., v2.0.5)
+          VERSION=$(echo "$TAG_NAME" | sed 's/^v//')  # Remove 'v' if needed (result will be 2.0.5)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV  # Set the VERSION environment variable
         shell: bash
-
-      - name: Ensure valid SemVer tag
-        run: |
-          if [[ "${{ env.VERSION }}" == "invalid" ]]; then
-            echo "Error: Tag does not follow SemVer format. Exiting."
-            exit 1
-          fi
-          echo "Valid SemVer tag: ${{ env.VERSION }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -35,19 +30,13 @@ jobs:
       - name: Log in to Docker Hub Container Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}  # Set in GitHub Secrets
-          password: ${{ secrets.DOCKERHUB_TOKEN }}    # Set in GitHub Secrets
+          username: ${{ vars.DOCKERHUB_USERNAME }}  # Set this in your GitHub Secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}    # Set this in your GitHub Secrets
 
-      - name: Build new Docker image manually
-        run: |
-          # Use docker commit to create an image from a container (if needed, otherwise you can skip this)
-          docker commit python-stats-app-tag python-stats-app-tag:latest
+      - name: Build and push Docker image to Docker Hub Registry
+        uses: docker/build-push-action@v6
+        with:
+            context: ./pythonenv
+            push: true
+            tags: ivaylorashkov/python-stats-app-specific-tag:${{ env.VERSION }}
 
-          # Tag the image manually
-          docker tag python-stats-app-tag:latest ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # Tag with version
-          docker tag python-stats-app-tag:latest ivaylorashkov/python-stats-app-tag:latest  # Always update latest
-
-      - name: Push new Docker image
-        run: |
-          docker push ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # Push with version tag
-          docker push ivaylorashkov/python-stats-app-tag:latest  # Always push latest tag
