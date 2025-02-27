@@ -37,7 +37,7 @@ jobs:
       - name: Log in to Docker Hub Container Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}  # Set in GitHub Secrets
+          username: ${{ secrets.DOCKERHUB_USERNAME }}  # Set in GitHub Secrets
           password: ${{ secrets.DOCKERHUB_TOKEN }}    # Set in GitHub Secrets
 
       - name: Build and push Docker image to Docker Hub Registry
@@ -46,5 +46,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # This is the valid tag, without extra spaces or comments
-            ivaylorashkov/python-stats-app-tag:latest  # Always update latest
+            ivaylorashkov/python-stats-app:${{ env.VERSION }}  # This is the valid tag (no inline comment in tag)
+            ivaylorashkov/python-stats-app:latest  # Always update latest
