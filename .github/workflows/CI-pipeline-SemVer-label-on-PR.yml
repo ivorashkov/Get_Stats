@@ -3,18 +3,25 @@ name: Build and Push Docker Image
 on:
   pull_request:
     types:
-      - labeled  # Triggers when a label is added
+      - labeled  # Trigger when a label is added
     branches:
-      - master  # Only runs on PRs targeting `master`
+      - master  # Only run on PRs targeting master
 
 jobs:
   build:
-    if: contains(github.event.pull_request.labels.*.name, 'SemVer')  # Run only if 'SemVer' label exists
+    if: contains(github.event.pull_request.labels.*.name, 'SemVer')  # Ensure 'SemVer' label exists
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Extract SemVer from Label
+        id: extract_version
+        run: |
+          VERSION=$(echo "${{ github.event.pull_request.labels.*.name }}" | grep -Eo 'v[0-9]+\.[0-9]+\.[0-9]+' || echo "latest")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+        shell: bash
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -22,12 +29,14 @@ jobs:
       - name: Log in to Docker Hub Container Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}  # Set this in GitHub Secrets
-          password: ${{ secrets.DOCKERHUB_TOKEN }}    # Set this in GitHub Secrets
+          username: ${{ vars.DOCKERHUB_USERNAME }}  # Set in GitHub Secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  # Set in GitHub Secrets
 
       - name: Build and push Docker image to Docker Hub Registry
         uses: docker/build-push-action@v6
         with:
-            context: .
-            push: true
-            tags: ivaylorashkov/python-stats-app:latest 
+          context: .
+          push: true
+          tags: |
+            ivaylorashkov/python-stats-app:${{ env.VERSION }}  # Use extracted SemVer
+            ivaylorashkov/python-stats-app:latest  # Always update latest
