@@ -14,12 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract version from tag
+      - name: Extract version from tag (remove 'v')
         id: extract_version
         run: |
-          # Extract version from the tag
+          # Extract version from the tag and remove the leading 'v'
           TAG_NAME=${GITHUB_REF##*/}
-          VERSION=$(echo "$TAG_NAME" | grep -Eo '^v[0-9]+\.[0-9]+\.[0-9]+$' || echo "invalid")
+          VERSION=$(echo "$TAG_NAME" | sed 's/^v//' || echo "invalid")  # Remove 'v' from the start of the version
           echo "VERSION=$VERSION" >> $GITHUB_ENV
         shell: bash
 
@@ -43,9 +43,8 @@ jobs:
       - name: Build and push Docker image to Docker Hub Registry
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: .  # Set context to the root directory
           push: true
           tags: |
-            ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # This is the valid tag (no inline comment in tag)
+            ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # Docker tag without 'v' prefix
             ivaylorashkov/python-stats-app-tag:latest  # Always update latest
-
