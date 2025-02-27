@@ -46,5 +46,6 @@ jobs:
           context: .
           push: true
           tags: |
-            ivaylorashkov/python-stats-app:${{ env.VERSION }}  # This is the valid tag (no inline comment in tag)
-            ivaylorashkov/python-stats-app:latest  # Always update latest
+            ivaylorashkov/python-stats-app-tag:${{ env.VERSION }}  # This is the valid tag (no inline comment in tag)
+            ivaylorashkov/python-stats-app-tag:latest  # Always update latest
+
