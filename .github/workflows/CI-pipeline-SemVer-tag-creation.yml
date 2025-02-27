@@ -1,32 +1,35 @@
-name: Build and Push Docker Image ON PR
+name: Build and Push Docker Image on Tag Creation
 
 on:
-  pull_request:
-    types:
-      - labeled  # Trigger when a label is added
-    branches:
-      - master  # Only run on PRs targeting master
+  push:
+    tags:
+      - 'v*'  # This ensures the workflow is triggered only for tags starting with 'v' (e.g., v1.0.0)
 
 jobs:
   build:
+    if: startsWith(github.ref, 'refs/tags/v')  # Ensure the tag starts with 'v' for SemVer validation
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Extract SemVer from Label
+      - name: Extract version from tag
         id: extract_version
         run: |
-          VERSION=$(echo "${{ github.event.pull_request.labels }}" | grep -oP 'v[0-9]+\.[0-9]+\.[0-9]+' || echo "latest")
+          # Extract version from the tag
+          TAG_NAME=${GITHUB_REF##*/}
+          VERSION=$(echo "$TAG_NAME" | grep -Eo '^v[0-9]+\.[0-9]+\.[0-9]+$' || echo "invalid")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
         shell: bash
 
-      - name: Check if SemVer label exists
+      - name: Ensure valid SemVer tag
         run: |
-          if [[ "${{ env.VERSION }}" == "latest" ]]; then
-            echo "No valid SemVer label found, exiting."
+          if [[ "${{ env.VERSION }}" == "invalid" ]]; then
+            echo "Error: Tag does not follow SemVer format. Exiting."
             exit 1
           fi
+          echo "Valid SemVer tag: ${{ env.VERSION }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -43,5 +46,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ivaylorashkov/python-stats-app-pr:${{ env.VERSION }}  # Use extracted SemVer
+            ivaylorashkov/python-stats-app:${{ env.VERSION }}  # Tag with the version extracted from the Git tag
             ivaylorashkov/python-stats-app:latest  # Always update latest
