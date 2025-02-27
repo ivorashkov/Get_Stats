@@ -41,16 +41,4 @@ git push origin test-pr-branch
 
 
 
-      - name: Build new Docker image manually
-        run: |
-          # Use docker commit to create an image from a container (if needed, otherwise you can skip this)
-          docker commit python-stats-app-tag python-stats-app-tag:latest
-
-          # Tag the image manually
-          docker tag python-stats-app:latest ivaylorashkov/python-stats-app:${{ env.VERSION }}  # Tag with version
-          docker tag python-stats-app:latest ivaylorashkov/python-stats-app:latest  # Always update latest
-
-      - name: Push new Docker image
-        run: |
-          docker push ivaylorashkov/python-stats-app:${{ env.VERSION }}  # Push with version tag
-          docker push ivaylorashkov/python-stats-app:latest  # Always push latest tag
+      
