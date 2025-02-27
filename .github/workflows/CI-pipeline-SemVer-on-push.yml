@@ -27,7 +27,7 @@ jobs:
       - name: Build and push Docker image to Docker Hub Registry
         uses: docker/build-push-action@v6
         with:
-            context: .
+            context: ./pythonenv
             push: true
             tags: ivaylorashkov/python-stats-app:latest 
 
