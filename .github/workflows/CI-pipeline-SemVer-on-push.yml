@@ -2,8 +2,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches:
-      - master
+    branches: ["master"]
     tags:
       - 'v*'  # This ensures the workflow triggers for tags following SemVer format, e.g., v1.0.0
     # Alternatively, you could use a label by using `pull_request` instead of `push` if that's required.
