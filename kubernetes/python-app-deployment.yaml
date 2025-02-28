@@ -4,7 +4,7 @@ metadata:
   name: python-stats-app
   namespace: devops-test-gke  # Replace with the appropriate namespace if needed
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: python-stats-app

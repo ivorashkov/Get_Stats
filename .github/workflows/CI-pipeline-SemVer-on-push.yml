@@ -62,4 +62,4 @@ jobs:
       # Apply Kubernetes deployment
       - name: Apply Kubernetes Deployment
         run: |
-          kubectl apply -f $GITHUB_WORKSPACE/kubernetes/python-stats-app-deployment.yaml --namespace=devops-test-gke # Path to your Kubernetes YAML file
+          kubectl apply -f $GITHUB_WORKSPACE/kubernetes/python-stats-app-deployment.yaml --namespace=devops-test-gke  --save-config # Path to your Kubernetes YAML file
