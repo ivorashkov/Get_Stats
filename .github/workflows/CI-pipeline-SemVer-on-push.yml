@@ -46,15 +46,22 @@ jobs:
       # Install the GKE gcloud auth plugin
       - name: Install gke-gcloud-auth-plugin
         run: |
-            curl -sSL https://sdk.cloud.google.com | bash  # Installs the latest Google Cloud SDK
-            source $HOME/google-cloud-sdk/path.bash.inc     # Source the updated path
-            gcloud components install gke-gcloud-auth-plugin  # Installs the gke plugin
+          curl -sSL https://sdk.cloud.google.com | bash  # Installs the latest Google Cloud SDK
+          source $HOME/google-cloud-sdk/path.bash.inc     # Source the updated path
+          gcloud components install kubectl              # Ensure kubectl is installed
+          gcloud components install gke-gcloud-auth-plugin  # Installs the GKE plugin
+
+      - name: Verify kubectl and gke-gcloud-auth-plugin
+        run: |
+            which kubectl
+            kubectl version --client
+            gcloud components list
 
       # Authenticate and configure kubectl to access the Kubernetes cluster
-      - name: Set up kubectl
+      - name: Set up kubectl and kubeconfig
         run: |
           gcloud container clusters get-credentials python-stats-app-cluster --zone us-central1-f --project my-own-devops-project
-
+        
       # Apply Kubernetes deployment
       - name: Apply Kubernetes Deployment
         run: |

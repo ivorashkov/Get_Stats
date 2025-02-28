@@ -152,7 +152,8 @@ gcloud container clusters create my-cluster \
   --num-nodes 2
 
 
-
+to access kubectl with my workflow i need kubeconfig file:
+kubectl config view
 
 
 
