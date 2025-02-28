@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: python-stats-app
-  namespace: devops_test_gke  # Replace with the appropriate namespace if needed
+  namespace: devops-test-gke  # Replace with the appropriate namespace if needed
 spec:
   replicas: 1
   selector:
