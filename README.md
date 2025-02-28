@@ -1,5 +1,10 @@
 #  **Get_Stats**
 
+## Public access URL:
+```url
+http://34.45.237.206/stats
+```
+
 ## Prerequisites
 
 Ensure you have the following tools installed:
