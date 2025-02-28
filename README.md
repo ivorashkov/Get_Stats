@@ -551,6 +551,9 @@ spec:
 
 ![image](https://github.com/user-attachments/assets/ba47f922-5aad-48e0-85bb-988f52974d24)
 
+![image](https://github.com/user-attachments/assets/6ff1b884-30c8-43ed-8c03-0f23f7fe769f)
+
+
 ❌ Ingress is not accessible, because I do not have bought Domain.
 
 Kubernetes Ingress Setup
