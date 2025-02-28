@@ -164,3 +164,33 @@ gcloud container clusters create my-cluster \
 
 
 
+----------------------------------------------
+
+
+
+
+kubectl logs <pod-name> -n devops-test-gke
+
+
+kubectl describe pod ingress-nginx-controller-5fb5847bbc -n ingress-nginx
+
+gcloud projects list
+my-own-devops-project  my-own-devops-project  542925932663
+
+kubectl config get-contexts
+gke_pid-goeuweut-devops_us-central1-f_go-ethereum-cluster   gke_pid-goeuweut-devops_us-central1-f_go-ethereum-cluster   gke_pid-goeuweut-devops_us-central1-f_go-ethereum-cluster   
+kubectl config current-context
+
+kubectl config use-context <context-name>
+
+gcloud auth login
+gcloud config set project my-own-devops-project
+gcloud config set compute/zone us-central1-f
+gcloud container clusters get-credentials python-stats-app-cluster
+
+kubectl config get-users
+kubectl config use-context gke_my-own-devops-project_us-central1-f_python-stats-app-cluster
+kubectl config current-context
+kubectl config set-context my-own-devops-project-context --cluster=python-stats-app-cluster --user=gke_my-own-devops-project_us-central1-f_python-stats-app-cluster
+
+gcloud container clusters get-credentials python-stats-app-cluster --region us-central1-f --project my-own-devops-project
