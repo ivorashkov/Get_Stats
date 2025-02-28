@@ -151,6 +151,8 @@ gcloud container clusters create my-cluster \
   --region us-central1 \
   --num-nodes 2
 
+access through: http://34.45.237.206/stats
+
 
 
 
@@ -194,3 +196,7 @@ kubectl config current-context
 kubectl config set-context my-own-devops-project-context --cluster=python-stats-app-cluster --user=gke_my-own-devops-project_us-central1-f_python-stats-app-cluster
 
 gcloud container clusters get-credentials python-stats-app-cluster --region us-central1-f --project my-own-devops-project
+
+
+kubectl port-forward <pod-name> 5000:5000 -n <namespace>
+kubectl port-forward python-stats-app-5cfc9b84c6-9mtq6	5000:5000 -n devops-test-gke
