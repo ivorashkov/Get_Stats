@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-stats-app
+  namespace: devops_test_gke  # Replace with the appropriate namespace if needed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-stats-app
+  template:
+    metadata:
+      labels:
+        app: python-stats-app
+    spec:
+      containers:
+        - name: python-stats-app
+          image: docker.io/ivaylorashkov/python-stats-app:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000  # Changed from 8080 to 5000
