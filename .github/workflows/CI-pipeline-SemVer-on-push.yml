@@ -46,13 +46,13 @@ jobs:
       # Install the GKE gcloud auth plugin
       - name: Install gke-gcloud-auth-plugin
         run: |
-          curl -sSL https://sdk.cloud.google.com | bash  # Installs the latest Google Cloud SDK
-          source $HOME/google-cloud-sdk/path.bash.inc     # Source the updated path
-          gcloud components install kubectl              # Ensure kubectl is installed
-          gcloud components install gke-gcloud-auth-plugin  # Installs the GKE plugin
+          curl -LO https://github.com/google-cloud-sdk/gke-gcloud-auth-plugin/releases/download/v0.1.0/gke-gcloud-auth-plugin-linux-amd64.tar.gz
+          tar -xvzf gke-gcloud-auth-plugin-linux-amd64.tar.gz
+          sudo mv gke-gcloud-auth-plugin /usr/local/bin
 
       - name: Verify kubectl and gke-gcloud-auth-plugin
         run: |
+            which gke-gcloud-auth-plugin
             which kubectl
             kubectl version --client
             gcloud components list
