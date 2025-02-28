@@ -44,23 +44,20 @@ jobs:
             version: 'latest'  # Or specify a version if you need a specific one
       
       # Install the GKE gcloud auth plugin
-      - name: Install gke-gcloud-auth-plugin
-        run: |
-          curl -LO https://github.com/google-cloud-sdk/gke-gcloud-auth-plugin/releases/download/v0.1.0/gke-gcloud-auth-plugin-linux-amd64.tar.gz
-          tar -xvzf gke-gcloud-auth-plugin-linux-amd64.tar.gz
-          sudo mv gke-gcloud-auth-plugin /usr/local/bin
+      - uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          install_components: "gke-gcloud-auth-plugin"
 
-      - name: Verify kubectl and gke-gcloud-auth-plugin
-        run: |
-            which gke-gcloud-auth-plugin
-            which kubectl
-            kubectl version --client
-            gcloud components list
+      - name: Authenticate to GKE cluster
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+            cluster_name: python-stats-app-cluster
+            location: us-central1-f
 
-      # Authenticate and configure kubectl to access the Kubernetes cluster
-      - name: Set up kubectl and kubeconfig
-        run: |
-          gcloud container clusters get-credentials python-stats-app-cluster --zone us-central1-f --project my-own-devops-project
+      # # Authenticate and configure kubectl to access the Kubernetes cluster
+      # - name: Set up kubectl and kubeconfig
+      #   run: |
+      #     gcloud container clusters get-credentials python-stats-app-cluster --zone us-central1-f --project my-own-devops-project
         
       # Apply Kubernetes deployment
       - name: Apply Kubernetes Deployment
