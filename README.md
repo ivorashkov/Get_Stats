@@ -589,17 +589,70 @@ kubectl get pods -n ingress-nginx
 
 ![image](https://github.com/user-attachments/assets/2ab2bc53-87de-486f-a861-9270e71526ee)
 
-
 ![image](https://github.com/user-attachments/assets/d0e2fc57-d529-4293-bbf0-e77cc74f8c92)
 
 ![image](https://github.com/user-attachments/assets/4a179a29-a16f-4ce7-8071-fb5118854fa2)
 
 
-** AUTOMATION **
+## AUTOMATION 
+- `Create "alerts.py"`
+  
+<img width="796" height="778" alt="image" src="https://github.com/user-attachments/assets/1dd6aaee-596a-4c5d-9daa-fe37561fcb5d" />
+<img width="726" height="169" alt="image" src="https://github.com/user-attachments/assets/b5a814a3-3a19-4b0e-a18d-e0bb8f794454" />
 
+1. Set it on VM:
+- `Copy the script to VM`
+```bash
+scp alerts.py username@VM_IP:/home/username/
+```
+2. Install dependencies:
+```bash
+sudo apt update && sudo apt install python3-pip -y
+pip3 install psutil requests
+```
+3. Test Manually:
+```bash
+python3 alerts.py
+```
+4. Automate with systemd service:
+```bash
+sudo vim /etc/systemd/system/getstats.service
+```
+- `.service file -> /etc/systemd/system/getstats.service`
+```bash
+[Unit]
+Description=Run GetStats script
 
+[Service]
+ExecStart=/usr/bin/python3 /home/username/alerts.py
+WorkingDirectory=/home/username
+StandardOutput=journal
+StandardError=journal
 
+```
 
+- `.timer file -> /etc/systemd/system/getstats.timer`
+```bash
+[Unit]
+Description=Run GetStats every 10 minutes
 
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=10min
+Unit=getstats.service
+
+[Install]
+WantedBy=timers.target
+```
+5. Activate the service
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now getstats.service
+```
+
+6. Test Timer   
+```bash
+systemctl list-timers --all
+```
 
 
