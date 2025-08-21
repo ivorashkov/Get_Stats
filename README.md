@@ -595,6 +595,7 @@ kubectl get pods -n ingress-nginx
 ![image](https://github.com/user-attachments/assets/4a179a29-a16f-4ce7-8071-fb5118854fa2)
 
 
+** AUTOMATION **
 
 
 
