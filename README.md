@@ -659,8 +659,8 @@ systemctl list-timers --all
 3. If we want to create secrets in kubernetes:
 ```bash
 kubectl create secret generic telegram-secrets \
-  --from-literal=BOT_TOKEN="8414000798:AAF0Oby2OyqwXrILqP0OuHHffZavPNhtWXo" \
-  --from-literal=CHAT_ID="8208739271"
+  --from-literal=BOT_TOKEN="ODQxNDAwMDc5ODpBQUYwT2J5Mk95cXdYcklMcVAwT3VISGZmWmF2UE5odFdYbw" \
+  --from-literal=CHAT_ID="ODIwODczOTI3MQ"
 ```
 
 
