@@ -1,4 +1,4 @@
-#  **Get_Stats**
+ #  **Get_Stats**
 
 ## Public access URL:
 ```url
@@ -600,7 +600,7 @@ kubectl get pods -n ingress-nginx
 <img width="796" height="778" alt="image" src="https://github.com/user-attachments/assets/1dd6aaee-596a-4c5d-9daa-fe37561fcb5d" />
 <img width="726" height="169" alt="image" src="https://github.com/user-attachments/assets/b5a814a3-3a19-4b0e-a18d-e0bb8f794454" />
 
-1. Set it on VM:
+## Setup in VM
 - `Copy the script to VM`
 ```bash
 scp alerts.py username@VM_IP:/home/username/
@@ -622,6 +622,7 @@ sudo vim /etc/systemd/system/getstats.service
 ```bash
 [Unit]
 Description=Run GetStats script
+After=network.target
 
 [Service]
 ExecStart=/usr/bin/python3 /home/username/alerts.py
@@ -654,5 +655,14 @@ sudo systemctl enable --now getstats.service
 ```bash
 systemctl list-timers --all
 ```
+## Kubernetes
+3. If we want to create secrets in kubernetes:
+```bash
+kubectl create secret generic telegram-secrets \
+  --from-literal=BOT_TOKEN="8414000798:AAF0Oby2OyqwXrILqP0OuHHffZavPNhtWXo" \
+  --from-literal=CHAT_ID="8208739271"
+```
+
+
 
 
