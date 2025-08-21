@@ -5,9 +5,9 @@ import requests
 # Config
 # Sent CPU / RAM / Disc usage in Telegram chat for Local machine
 # =====================
-BOT_TOKEN = "8414000798:AAF0Oby2OyqwXrILqP0OuHHffZavPNhtWXo"
-# https://api.telegram.org/bot8414000798:AAF0Oby2OyqwXrILqP0OuHHffZavPNhtWXo/getUpdates
-CHAT_ID = "8208739271"
+BOT_TOKEN = "ODQxNDAwMDc5ODpBQUYwT2J5Mk95cXdYcklMcVAwT3VISGZmWmF2UE5odFdYbw"
+# https://api.telegram.org/bot{BOT_TOKEN}/getUpdates
+CHAT_ID = "ODIwODczOTI3MQ"
 
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
