@@ -596,8 +596,8 @@ kubectl get pods -n ingress-nginx
 
 ## AUTOMATION 
 - `Create "alerts.py"`
-  
-<img width="796" height="778" alt="image" src="https://github.com/user-attachments/assets/1dd6aaee-596a-4c5d-9daa-fe37561fcb5d" />
+<img width="1053" height="1172" alt="image" src="https://github.com/user-attachments/assets/03cd074d-df61-4193-a0e5-9066b7bce615" />
+
 <img width="726" height="169" alt="image" src="https://github.com/user-attachments/assets/b5a814a3-3a19-4b0e-a18d-e0bb8f794454" />
 
 ## Setup in VM
